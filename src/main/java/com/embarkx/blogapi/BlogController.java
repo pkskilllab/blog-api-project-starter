@@ -53,9 +53,12 @@ public class BlogController {
     }
 
     @DeleteMapping("/{id}")
-    public String deletePost(@PathVariable int id) {
+    public ResponseEntity<String> deletePost(@PathVariable int id) {
+        if (id < 0 || id >= posts.size()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Post not found");
+        }
         posts.remove(id);
-        return "Deleted";
+        return ResponseEntity.ok("Deleted");
     }
 
 @GetMapping("/total")
