@@ -20,6 +20,12 @@ public class BlogController {
         if (content == null || content.isBlank()) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Content must not be empty");
         }
+        if (title.length() > 50) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Title must not exceed 50 characters");
+        }
+        if (content.length() > 50) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Content must not exceed 50 characters");
+        }
         String post = title + ":" + content;
         posts.add(post);
         return ResponseEntity.status(HttpStatus.CREATED).body("Post created");
