@@ -1,5 +1,7 @@
 package com.embarkx.blogapi;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -11,10 +13,16 @@ public class BlogController {
     private static List<String> posts = new ArrayList<>();
 
     @PostMapping
-    public String createPost(@RequestParam String title, @RequestParam String content) {
+    public ResponseEntity<String> createPost(@RequestParam String title, @RequestParam String content) {
+        if (title == null || title.isBlank()) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Title must not be empty");
+        }
+        if (content == null || content.isBlank()) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Content must not be empty");
+        }
         String post = title + ":" + content;
         posts.add(post);
-        return "Post created";
+        return ResponseEntity.status(HttpStatus.CREATED).body("Post created");
     }
 
     @GetMapping
