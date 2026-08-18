@@ -37,8 +37,11 @@ public class BlogController {
     }
 
     @GetMapping("/{id}")
-    public String getPost(@PathVariable int id) {
-        return posts.get(id);
+    public ResponseEntity<String> getPost(@PathVariable int id) {
+        if (id < 0 || id >= posts.size()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Post not found");
+        }
+        return ResponseEntity.ok(posts.get(id));
     }
 
     @PostMapping("/validate")
