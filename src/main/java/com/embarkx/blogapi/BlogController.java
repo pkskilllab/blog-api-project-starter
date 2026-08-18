@@ -64,9 +64,9 @@ public class BlogController {
 @GetMapping("/total")
 public String getTotalWordCount() {
     List<String> wordCounts = List.of("100", "200", "300");
-    String total = "";
+    int total = 0;
     for (String count : wordCounts) {
-        total += count;
+        total += Integer.parseInt(count);
     }
     return "Total words: " + total;
 }
