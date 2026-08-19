@@ -1,5 +1,6 @@
 package com.embarkx.blogapi;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -12,19 +13,30 @@ public class BlogController {
 
     private static List<String> posts = new ArrayList<>();
 
+    @Value("${blog.post.max-title-length}")
+    private int maxTitleLength;
+
+    @Value("${blog.post.max-content-length}")
+    private int maxContentLength;
+
+    @Value("${blog.post.validate-max-length}")
+    private int validateMaxLength;
+
     @PostMapping
-    public ResponseEntity<String> createPost(@RequestParam String title, @RequestParam String content) {
+    public ResponseEntity<String> createPost(@RequestBody PostDTO request) {
+        String title = request.getTitle();
+        String content = request.getContent();
         if (title == null || title.isBlank()) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Title must not be empty");
         }
         if (content == null || content.isBlank()) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Content must not be empty");
         }
-        if (title.length() > 50) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Title must not exceed 50 characters");
+        if (title.length() > maxTitleLength) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Title must not exceed " + maxTitleLength + " characters");
         }
-        if (content.length() > 50) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Content must not exceed 50 characters");
+        if (content.length() > maxContentLength) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Content must not exceed " + maxContentLength + " characters");
         }
         String post = title + ":" + content;
         posts.add(post);
@@ -46,7 +58,7 @@ public class BlogController {
 
     @PostMapping("/validate")
     public String validateContent(@RequestParam String content) {
-        if (content.length() > 5000) {
+        if (content.length() > validateMaxLength) {
             return "Too long";
         }
         return "OK";

@@ -8,9 +8,18 @@
       "name": "Create Post",
       "request": {
         "method": "POST",
-        "header": [],
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"title\": \"My First Post\",\n  \"content\": \"This is the content of my first post\"\n}"
+        },
         "url": {
-          "raw": "http://localhost:8080/api/posts?title=My First Post&content=This is the content of my first post",
+          "raw": "http://localhost:8080/api/posts",
           "host": [
             "localhost"
           ],
@@ -18,16 +27,6 @@
           "path": [
             "api",
             "posts"
-          ],
-          "query": [
-            {
-              "key": "title",
-              "value": "My First Post"
-            },
-            {
-              "key": "content",
-              "value": "This is the content of my first post"
-            }
           ],
           "protocol": "http"
         }
@@ -37,9 +36,18 @@
       "name": "Create Post - Empty Title (Bug: no validation)",
       "request": {
         "method": "POST",
-        "header": [],
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"title\": \"\",\n  \"content\": \"Content with no title\"\n}"
+        },
         "url": {
-          "raw": "http://localhost:8080/api/posts?title=&content=Content with no title",
+          "raw": "http://localhost:8080/api/posts",
           "host": [
             "localhost"
           ],
@@ -47,16 +55,6 @@
           "path": [
             "api",
             "posts"
-          ],
-          "query": [
-            {
-              "key": "title",
-              "value": ""
-            },
-            {
-              "key": "content",
-              "value": "Content with no title"
-            }
           ],
           "protocol": "http"
         }
